@@ -1,18 +1,14 @@
 #include <Windows.h>
 #include <iostream>
 #include "ammo.h"
+#include "patch_memory.h"
 
-bool ammoEnabled = false;
-
-void toggleAmmo() {
-  ammoEnabled = !ammoEnabled;
+int refillAmmo(HANDLE hProcess) {
+  return mem_patch(hProcess, (LPVOID)PISTOL_AMMO, 69, 4);
 }
 
-void initAmmo() {
-  while(1) {
-    if (!ammoEnabled)
-      continue;
-
-    
-  }
+int getRealAmmoCount(HANDLE hProcess) {
+  int ammo;
+  ReadProcessMemory(hProcess, (LPCVOID)PISTOL_AMMO, &ammo, 4, 0);
+  return ammo;
 }

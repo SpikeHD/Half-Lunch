@@ -3,6 +3,6 @@
 
 #include <Windows.h>
 
-void mem_patch(HANDLE, LPVOID, int, int);
+int mem_patch(HANDLE, LPVOID, int, int);
 
 #endif

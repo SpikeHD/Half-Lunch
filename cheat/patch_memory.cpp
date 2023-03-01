@@ -1,11 +1,16 @@
 #include "patch_memory.h"
 
 #include <Windows.h>
+#include <iostream>
 
-void mem_patch(HANDLE proc, LPVOID addr, int val, int size) {
+using namespace std;
+
+int mem_patch(HANDLE proc, LPVOID addr, int val, int size) {
   DWORD old;
+  
+  VirtualProtectEx(proc, addr, size, PAGE_EXECUTE_READWRITE, &old);
+  int result = WriteProcessMemory(proc, addr, &val, size, 0);
+  VirtualProtectEx(proc, addr, size, old, &old);
 
-  VirtualProtect(proc, size, PAGE_EXECUTE_READWRITE, &old);
-  WriteProcessMemory(proc, addr, (LPCVOID)val, size, 0);
-  VirtualProtect(proc, size, old, &old);
+  return result;
 }

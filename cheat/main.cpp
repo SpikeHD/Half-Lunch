@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <iostream>
+#include "patches/ammo.h"
 
 using namespace std;
 
@@ -13,6 +14,8 @@ DWORD WINAPI MainThread(LPVOID param) {
       MessageBoxW(NULL, L"Infinite Ammo Activated!", L"Test", MB_OK);
     }
 
+    refillAmmo(GetCurrentProcess());
+
     Sleep(100);
   }
 
@@ -23,8 +26,6 @@ bool WINAPI DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved) {
   if (dwReason == DLL_PROCESS_ATTACH) {
     MessageBoxW(NULL, L"DLL Injected!", L"Test", MB_OK);
     CreateThread(0, 0, MainThread, hModule, 0, 0);
-
-    // Init functions
   }
 
   return true;
